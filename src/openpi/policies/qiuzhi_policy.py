@@ -53,7 +53,7 @@ class QiuzhiInputs(transforms.DataTransformFn):
         # since the pi0-FAST action_dim = 7, which is < state_dim = 8, so pad is skipped.
         # Keep this for your own dataset, but if your dataset stores the proprioceptive input
         # in a different key than "observation/state", you should change it below.
-        state = transforms.pad_to_dim(data["observations/state"], self.action_dim)
+        state = transforms.pad_to_dim(data["observation/states"], self.action_dim)
 
         # Possibly need to parse images to uint8 (H,W,C) since LeRobot automatically
         # stores as float32 (C,H,W), gets skipped for policy inference.
@@ -64,8 +64,8 @@ class QiuzhiInputs(transforms.DataTransformFn):
         # and two wrist views (left and right). If your dataset does not have a particular type
         # of image, e.g. wrist images, you can comment it out here and replace it with zeros like we do for the
         # right wrist image below.
-        base_image = _parse_image(data["observations/image"])
-        wrist_image = _parse_image(data["observations/wrist_image"])
+        base_image = _parse_image(data["observation/image"])
+        wrist_image = _parse_image(data["observation/left_wrist_image"])
 
         # Create inputs dict. Do not change the keys in the dict below.
         inputs = {
@@ -86,10 +86,10 @@ class QiuzhiInputs(transforms.DataTransformFn):
 
         # Pad actions to the model action dimension. Keep this for your own dataset.
         # Actions are only available during training.
-        if "actiongh" in data:
+        if "actions" in data:
             # We are padding to the model action dim.
             # For pi0-FAST, this is a no-op (since action_dim = 7).
-            actions = transforms.pad_to_dim(data["actiongh"], self.action_dim)
+            actions = transforms.pad_to_dim(data["actions"], self.action_dim)
             inputs["actions"] = actions
 
         # Pass the prompt (aka language instruction) to the model.

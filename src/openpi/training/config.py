@@ -342,18 +342,20 @@ class LeRobotQiuzhiDataConfig(DataConfigFactory):
     Data config for Qiuzhi robot dataset. This config handles the data transforms 
     and key mappings for the Qiuzhi robot platform.
     """
+    # Action keys that will be used to read the action sequence from the dataset.
+    action_sequence_keys: Sequence[str] = ("action",)
     @override
     def create(self, assets_dirs: pathlib.Path, model_config: _model.BaseModelConfig) -> DataConfig:
-        # Repack transform to map dataset keys to expected inference keys
+        # Repack transform to map dataset keys to expected inference keys, key is new(需要和libero input那边对齐), value is old key
         repack_transform = _transforms.Group(
             inputs=[
                 _transforms.RepackTransform(
                     {
-                        "observation.images.cam_highs": "observation/image",
-                        "observation.images.cam_left_wrists": "observation/wrist_image", 
-                        "observation.states": "observation/state",
-                        "actions": "actions",
-                        "prompst": "prompt",
+                        "observation/image": "observation.images.cam_high",
+                        "observation/left_wrist_image": "observation.images.cam_left_wrist", 
+                        "observation/states": "observation.state",
+                        "actions": "action",
+                        "prompt": "prompt",
                     }
                 )
             ]
@@ -386,6 +388,7 @@ class LeRobotQiuzhiDataConfig(DataConfigFactory):
             repack_transforms=repack_transform,
             data_transforms=data_transforms,
             model_transforms=model_transforms,
+            action_sequence_keys=self.action_sequence_keys,
         )
 
 
@@ -700,7 +703,7 @@ _CONFIGS = [
             base_config=DataConfig(prompt_from_task=True),
         ),
         weight_loader=weight_loaders.CheckpointWeightLoader("gs://openpi-assets/checkpoints/pi0_base/params"),
-        num_train_steps=30_000,
+        num_train_steps=7000,
     ),
     
     #
