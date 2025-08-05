@@ -10,12 +10,7 @@ def main():
 
     try:
         df = pl.read_parquet(args.file_path)
-        if "observation.state" in df.columns:
-            print(f"First {args.rows} values of 'observation.state':")
-            print(df.select("observation.state").head(args.rows))
-        else:
-            print("Column 'observation.state' not found.")
-            print(f"Available columns are: {df.columns}")
+        print(f"Available columns are: {df.columns}")
 
     except Exception as e:
         print(f"Error reading Parquet file: {e}")
