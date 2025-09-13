@@ -321,7 +321,7 @@ class PromptFromLeRobotTask(DataTransformFn):
         if (prompt := self.tasks.get(task_index)) is None:
             raise ValueError(f"{task_index=} not found in task mapping: {self.tasks}")
 
-        return {**data, "prompt": prompt}
+        return {**data, "prompt": prompt} # 这一步就把 "prompt" 键加进了返回的样本字典。
 
 
 @dataclasses.dataclass(frozen=True)
