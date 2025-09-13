@@ -724,7 +724,7 @@ _CONFIGS = [
         # dataset. For your own dataset, you can change the repo_id to point to your dataset.
         # Also modify the DataConfig to use the new config you made for your dataset above.
         data=LeRobotRoboTwinDataConfig(
-            repo_id="/home/jovyan/workspace/openpi/dataset/adjust_bottle-50ep-agilex-demo_clean",
+            repo_id="/home/jovyan/workspace/openpi/dataset/beat_block_hammer-50ep-agilex-demo_clean",
             base_config=DataConfig(
                 # This flag determines whether we load the prompt (i.e. the task instruction) from the
                 # ``task`` field in the LeRobot dataset. If set to True, the prompt will show up in
