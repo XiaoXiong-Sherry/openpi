@@ -278,3 +278,4 @@ def main(config: _config.TrainConfig):
 
 if __name__ == "__main__":
     main(_config.cli())
+    # XLA_PYTHON_CLIENT_MEM_FRACTION=0.9 uv run scripts/train.py pi0_robotwin --exp-name=beat_block_hammer-50ep-agilex-demo_clean --overwrite
